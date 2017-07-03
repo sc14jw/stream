@@ -1,7 +1,7 @@
 // Package stream provide a fluent interface for interacting with a given slice including filtering, transformations and ordering.
 package stream
 
-import "optional"
+import "github.com/sc14jw/optional"
 
 // NilSliceError contains the error message returned should a slice be attempted to be created from a Nil slice.
 const NilSliceError = "The given slice was nil resulting in a stream being unable to be created"
