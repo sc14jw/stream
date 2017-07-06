@@ -64,6 +64,40 @@ func TestToSlice(t *testing.T) {
 	}
 }
 
+func TestTransform(t *testing.T) {
+	strm, _ := Of(testItems)
+
+	strm.Transform(func(elem interface{}, i int) (newElem interface{}) {
+		if elem.(string) == "hello" {
+			return interface{}("hello changed")
+		}
+
+		return elem
+	})
+
+	if !sliceEqual([]interface{}{"hello changed", "this is a test"}, strm.s) {
+		t.Errorf(incorrectSlice, []interface{}{"hello changed", "this is a test"}, strm.s)
+	} else if sliceEqual(testItems, strm.s) {
+		t.Errorf(matchingSlice, testItems, strm.s)
+	}
+
+	strm, _ = Of([]interface{}{1, 2, 3, 4})
+
+	strm.Transform(func(elem interface{}, i int) (newElem interface{}) {
+		if elem.(int) == 1 {
+			return 2
+		}
+
+		return elem
+	})
+
+	if !sliceEqual([]interface{}{2, 2, 3, 4}, strm.s) {
+		t.Errorf(incorrectSlice, []interface{}{2, 2, 3, 4}, strm.s)
+	} else if sliceEqual(testItems, strm.s) {
+		t.Errorf(matchingSlice, testItems, strm.s)
+	}
+}
+
 func sliceEqual(exp []interface{}, act []interface{}) (res bool) {
 	if len(exp) != len(act) {
 		return

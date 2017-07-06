@@ -31,6 +31,18 @@ func (s *Stream) ToSlice() (elems []interface{}) {
 	return
 }
 
+// Transform run a passed in function over all elements within the given Stream's slice of elements. The function is applied to each element within the stream being passed the current element and the index.
+// This function should return the altered element as it's return value.
+func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) {
+	strm = s
+	newS := make([]interface{}, 0)
+	for i, elem := range strm.s {
+		newS = append(newS, f(elem, i))
+	}
+	strm.s = newS
+	return
+}
+
 // Of returns a new Stream from a given slice of interfaces. An error with the message NilSliceError will be returned should the given slice be nil.
 func Of(list []interface{}) (strm *Stream, err error) {
 	opt, err := optional.NotNilWithMessage(list, NilSliceError)
