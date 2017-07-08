@@ -25,12 +25,6 @@ func (s *Stream) Filter(f func(*interface{}, int) bool) (strm *Stream) {
 	return
 }
 
-// ToSlice returns the given stream as a slice of interfaces.
-func (s *Stream) ToSlice() (elems []interface{}) {
-	elems = s.s
-	return
-}
-
 // Transform run a passed in function over all elements within the given Stream's slice of elements. The function is applied to each element within the stream being passed the current element and the index.
 // This function should return the altered element as it's return value. Returns the stream reference.
 func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) {
@@ -43,6 +37,17 @@ func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) 
 	return
 }
 
+// Flatten use a passed in function to flatten a given stream into a singular object through running a function against all elements within the stream.
+// This passed in function should take in an accumilator showing the current state of the flatten stream, the next element in the stream and the current index of the stream.
+func (s *Stream) Flatten(f func(interface{}, interface{}, int) interface{}) (accum interface{}) {
+	accum = s.s[0]
+	for i, elem := range s.s[1:] {
+		accum = f(accum, elem, i)
+	}
+
+	return
+}
+
 // ToMap allows for a given stream's contents to be converted to a map using a given function. This function should take an element and an index and
 // return two parameters, the key for the element first, and the value representing this element second.
 func (s *Stream) ToMap(f func(interface{}, int) (interface{}, interface{})) (m map[interface{}]interface{}) {
@@ -51,6 +56,12 @@ func (s *Stream) ToMap(f func(interface{}, int) (interface{}, interface{})) (m m
 		key, value := f(elem, i)
 		m[key] = value
 	}
+	return
+}
+
+// ToSlice returns the given stream as a slice of interfaces.
+func (s *Stream) ToSlice() (elems []interface{}) {
+	elems = s.s
 	return
 }
 

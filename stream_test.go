@@ -5,6 +5,7 @@ import "testing"
 const (
 	errorReturned   = "The error %v was displayed when none were expected"
 	incorrectSlice  = "The slice %v does not equal the expected slice %v"
+	incorrectValue  = "The value %v does not equal the expected value %v"
 	matchingSlice   = "The slice %v equals the slice %v when they should not be equal"
 	noErrorReturned = "No Error was returned"
 	notNil          = "Stream was not nil"
@@ -120,6 +121,21 @@ func TestToMap(t *testing.T) {
 		t.Errorf(errorReturned, err)
 	} else if !mapEqual(testMap, m) {
 		t.Errorf(incorrectSlice, m, testMap)
+	}
+}
+
+func TestFlatten(t *testing.T) {
+	s, _ := Of(testItems)
+
+	res := s.Flatten(func(acc interface{}, elem interface{}, i int) (res interface{}) {
+		str := acc.(string)
+		str += (", " + elem.(string))
+		res = interface{}(str)
+		return
+	})
+
+	if res != "hello, this is a test" {
+		t.Errorf(incorrectValue, res, "hello, this is a test")
 	}
 }
 
