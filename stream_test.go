@@ -54,8 +54,8 @@ func TestFilter(t *testing.T) {
 func TestToSlice(t *testing.T) {
 	strm, _ := Of(testItems)
 
-	if !sliceEqual(testItems, strm.s) {
-		t.Errorf(incorrectSlice, strm.s, testItems)
+	if !sliceEqual(testItems, strm.ToSlice()) {
+		t.Errorf(incorrectSlice, strm.ToSlice(), testItems)
 	}
 
 	strm.s = []interface{}{1, 2, 5, 6}
