@@ -1,4 +1,4 @@
-// Package stream provide a fluent interface for interacting with a given slice including filtering, transformations and ordering.
+// Package stream provides a fluent interface for interacting with a given slice including filtering, transformations and ordering.
 package stream
 
 import "github.com/sc14jw/optional"
@@ -32,7 +32,7 @@ func (s *Stream) ToSlice() (elems []interface{}) {
 }
 
 // Transform run a passed in function over all elements within the given Stream's slice of elements. The function is applied to each element within the stream being passed the current element and the index.
-// This function should return the altered element as it's return value.
+// This function should return the altered element as it's return value. Returns the stream reference.
 func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) {
 	strm = s
 	newS := make([]interface{}, 0)
@@ -40,6 +40,17 @@ func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) 
 		newS = append(newS, f(elem, i))
 	}
 	strm.s = newS
+	return
+}
+
+// ToMap allows for a given stream's contents to be converted to a map using a given function. This function should take an element and an index and
+// return two parameters, the key for the element first, and the value representing this element second.
+func (s *Stream) ToMap(f func(interface{}, int) (interface{}, interface{})) (m map[interface{}]interface{}) {
+	m = make(map[interface{}]interface{})
+	for i, elem := range s.s {
+		key, value := f(elem, i)
+		m[key] = value
+	}
 	return
 }
 

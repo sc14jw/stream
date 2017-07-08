@@ -98,6 +98,31 @@ func TestTransform(t *testing.T) {
 	}
 }
 
+func TestToMap(t *testing.T) {
+	testMap := make(map[interface{}]interface{})
+	testMap[interface{}("hello")] = interface{}("hello value")
+	testMap[interface{}("this is a test")] = interface{}("this is a test value")
+
+	s, err := Of(testItems)
+	m := s.ToMap(func(elem interface{}, i int) (k interface{}, v interface{}) {
+		if str, ok := elem.(string); ok {
+			k = elem
+			v = interface{}(str + " value")
+			return
+		}
+
+		k = elem
+		v = interface{}(4)
+		return
+	})
+
+	if err != nil {
+		t.Errorf(errorReturned, err)
+	} else if !mapEqual(testMap, m) {
+		t.Errorf(incorrectSlice, m, testMap)
+	}
+}
+
 func sliceEqual(exp []interface{}, act []interface{}) (res bool) {
 	if len(exp) != len(act) {
 		return
@@ -105,6 +130,21 @@ func sliceEqual(exp []interface{}, act []interface{}) (res bool) {
 
 	for i := range exp {
 		if exp[i] != act[i] {
+			return
+		}
+	}
+
+	res = true
+	return
+}
+
+func mapEqual(exp map[interface{}]interface{}, act map[interface{}]interface{}) (res bool) {
+	if len(exp) != len(act) {
+		return
+	}
+
+	for k, v := range exp {
+		if v != act[k] {
 			return
 		}
 	}
