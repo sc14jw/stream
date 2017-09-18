@@ -139,6 +139,23 @@ func TestFlatten(t *testing.T) {
 	}
 }
 
+func TestSort(t *testing.T) {
+	s, _ := Of(testItems)
+
+	sortedStream := s.Sort(func(first interface{}, second interface{}) (res bool) {
+		firstStr := first.(string)
+		if firstStr[0] != 'h' {
+			res = true
+		}
+
+		return
+	})
+
+	if sortedStream.s[0] != testItems[1] {
+		t.Errorf(incorrectValue, sortedStream.s[0], testItems[1])
+	}
+}
+
 func sliceEqual(exp []interface{}, act []interface{}) (res bool) {
 	if len(exp) != len(act) {
 		return

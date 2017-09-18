@@ -1,7 +1,10 @@
 // Package stream provides a fluent interface for interacting with a given slice including filtering, transformations and ordering.
 package stream
 
-import "github.com/sc14jw/optional"
+import (
+	slice2 "github.com/bradfitz/slice"
+	"github.com/sc14jw/optional"
+)
 
 // NilSliceError contains the error message returned should a slice be attempted to be created from a Nil slice.
 const NilSliceError = "The given slice was nil resulting in a stream being unable to be created"
@@ -34,6 +37,20 @@ func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) 
 		newS = append(newS, f(elem, i))
 	}
 	strm.s = newS
+	return
+}
+
+// Sort sorts a Stream using the https://godoc.org/github.com/bradfitz/slice sorting package with a given sorting function. The given function must take two interface representing the elements to be compared against each other returning true if the first element is greater than
+// the first else false. This function will return the stream you have been working using sorted in accordance with the passed in function.
+func (s *Stream) Sort(sortFunc func(i interface{}, j interface{}) bool) (strm *Stream) {
+	strm = s
+
+	convFunc := func(i, j int) (res bool) {
+		res = sortFunc(s.s[i], s.s[j])
+		return
+	}
+
+	slice2.Sort(strm.s, convFunc)
 	return
 }
 
@@ -73,7 +90,7 @@ func Of(list []interface{}) (strm *Stream, err error) {
 	}
 
 	s := make([]interface{}, len(list))
-	s = list[:]
+	copy(s, list)
 	strm = &Stream{s: s}
 	return
 }
