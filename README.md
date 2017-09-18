@@ -1,4 +1,5 @@
-# stream 
+# stream
+[![](https://godoc.org/github.com/nathany/looper?status.svg)](https://godoc.org/github.com/sc14jw/stream)
 [![Build Status](https://travis-ci.org/sc14jw/stream.svg?branch=master)](https://travis-ci.org/sc14jw/stream) [![Coverage Status](https://coveralls.io/repos/github/sc14jw/stream/badge.svg?branch=master)](https://coveralls.io/github/sc14jw/stream?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/sc14jw/stream)](https://goreportcard.com/report/github.com/sc14jw/stream)
 
 A small Go libary for supplying a fluent interface for interacting with Go slices. A stream can be created with the following
