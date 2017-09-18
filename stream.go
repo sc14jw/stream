@@ -2,7 +2,7 @@
 package stream
 
 import (
-	slice2 "github.com/bradfitz/slice"
+	"github.com/bradfitz/slice"
 	"github.com/sc14jw/optional"
 )
 
@@ -50,7 +50,7 @@ func (s *Stream) Sort(sortFunc func(i interface{}, j interface{}) bool) (strm *S
 		return
 	}
 
-	slice2.Sort(strm.s, convFunc)
+	slice.Sort(strm.s, convFunc)
 	return
 }
 
