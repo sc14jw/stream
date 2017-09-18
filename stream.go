@@ -40,8 +40,8 @@ func (s *Stream) Transform(f func(interface{}, int) interface{}) (strm *Stream) 
 	return
 }
 
-// Sort sorts a Stream using the https://godoc.org/github.com/bradfitz/slice sorting package with a given sorting function. The given function must take two interface representing the elements to be compared against each other returning true if the first element is greater than
-// the first else false. This function will return the stream you have been working using sorted in accordance with the passed in function.
+// Sort sorts a Stream using the https://godoc.org/github.com/bradfitz/slice sorting package with a given sorting function. The given function must take two interface representing the elements to be compared against each other returning true if the first element is less than
+// the second, else false. This function will return the stream you have been working using sorted in accordance with the passed in function.
 func (s *Stream) Sort(sortFunc func(i interface{}, j interface{}) bool) (strm *Stream) {
 	strm = s
 
